@@ -1,6 +1,30 @@
 import requests
-user_id = 12345
-url = 'https://cbr.ru/currency_base/dynamics/?UniDbQuery.Posted=True&UniDbQuery.so=1&UniDbQuery.mode=1&UniDbQuery.VAL_NM_RQ=R01010&UniDbQuery.From=28.10.2021&UniDbQuery.To=04.11.2021'
+from bs4 import BeautifulSoup as bs
+
+coin_name = "Казахстанский тенге"
+
+r = requests.get("https://cbr.ru/currency_base/dynamics/")
+soup = bs(r.text, "html.parser")
+coins = soup.findAll("option")
+for coin in coins:
+      if (coin.text.strip()==coin_name):
+            coin_id = coin.attrs["value"]
+
+
+
+url = "https://cbr.ru/currency_base/dynamics/" \
+      "?UniDbQuery.Posted=True&UniDbQuery.so=1" \
+      "&UniDbQuery.mode=1" \
+      "&UniDbQuery.VAL_NM_RQ={}" \
+      "&UniDbQuery.From=28.10.2021" \
+      "&UniDbQuery.To=04.11.2021".format(coin_id)
 r = requests.get(url)
-with open('test.html', 'w') as output_file:
-    output_file.write(r.text)
+soup = bs(r.text, "html.parser")
+coins_html_table = soup.findAll("tr")
+
+coins = []
+
+for coin in coins_html_table:
+      coins.append(coin.text)
+
+print()
