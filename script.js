@@ -1,0 +1,1 @@
+https://cbr.ru/currency_base/dynamics/?UniDbQuery.Posted=True&UniDbQuery.so=1&UniDbQuery.mode=1&UniDbQuery.VAL_NM_RQ=R01010&UniDbQuery.From=28.10.2021&UniDbQuery.To=04.11.2021
