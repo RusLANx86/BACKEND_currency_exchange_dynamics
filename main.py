@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import requests
 from bs4 import BeautifulSoup as bs
 
@@ -9,8 +11,6 @@ coins = soup.findAll("option")
 for coin in coins:
       if (coin.text.strip()==coin_name):
             coin_id = coin.attrs["value"]
-
-
 
 url = "https://cbr.ru/currency_base/dynamics/" \
       "?UniDbQuery.Posted=True&UniDbQuery.so=1" \
@@ -24,7 +24,11 @@ coins_html_table = soup.findAll("tr")
 
 coins = []
 
-for coin in coins_html_table:
-      coins.append(coin.text)
+with open("test.txt", "w") as f:
+      for coin in coins_html_table:
+            c = coin.text.split("\n")
+            cc = list(filter(None, c))
+            coins.append(cc)
+            f.write("\t|\t".join(cc)+"\n")
 
-print()
+pprint(coins)
