@@ -2,19 +2,16 @@ import requests
 from bs4 import BeautifulSoup as bs
 
 
-def get_list_of_currencies(url="https://cbr.ru/currency_base/dynamics/") -> list:
+def get_dict_of_currencies(url: str) -> dict:
       r = requests.get(url)
       soup = bs(r.text, "html.parser")
       currencies = soup.findAll("option")
-      return currencies
-
-
-def get_VAL_NM_RQ_by_name(currency_name: str) -> str:
-      currencies = get_list_of_currencies()
+      dict_of_currencies = {}
       for currency in currencies:
-            if (currency.text.strip()==currency_name):
-                  return currency.attrs["value"]
-
+          key = currency.text.strip()
+          val = currency.attrs["value"]
+          dict_of_currencies[key] = val
+      return dict_of_currencies
 
 def get_currency_course_dynamics(VAL_NM_RQ, Posted=True, so=1, mode=1, From="28.10.2021", To="04.11.2021") -> list:
       url = "https://cbr.ru/currency_base/dynamics/" \
@@ -44,13 +41,14 @@ def get_currency_course_dynamics(VAL_NM_RQ, Posted=True, so=1, mode=1, From="28.
       return currency_course_dynamics
 
 
-def save_to_file(currency_course_dynamics, file_name="currency_course_dynamics.txt") -> bool:
-      try:
-            with open(file_name, "w") as f:
-                  for currency_rate in currency_course_dynamics:
-                        f.write(currency_rate)
-      except Exception as ex:
-            print(ex.__traceback__)
-            return False
-      else:
-            return True
+def save_to_file(data, file_name="currency_course_dynamics.txt") -> bool:
+    try:
+        with open(file_name, "w") as f:
+            for currency_rate in data:
+                st = str(currency_rate)
+                f.write(st + "\n")
+    except Exception as ex:
+        print(ex.__traceback__)
+        return False
+    else:
+        return True
