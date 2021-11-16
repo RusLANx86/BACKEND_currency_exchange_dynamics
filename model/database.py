@@ -19,5 +19,6 @@ def input_currency_course_dynamics_into_DB(VAL_NM_RQ:str, name: str, course_dyna
             value       = value,
             date        = date
         )
+        session.query(Currency)
         session.add(currency)
     session.commit()

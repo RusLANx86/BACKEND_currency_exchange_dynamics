@@ -17,3 +17,4 @@ class Currency(Base):
             name=self.name,
             VAL_NM_RQ=self.VAL_NM_RQ
         )
+
