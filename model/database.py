@@ -17,6 +17,7 @@ def input_currency_course_dynamics_into_DB(VAL_NM_RQ:str, name: str, course_dyna
     for date, _, value in course_dynamics:
         if date in dates:
             c = session.query(Currency).filter(
+                Currency.VAL_NM_RQ == VAL_NM_RQ,
                 Currency.date == date
             ).one()
             c.value = value
